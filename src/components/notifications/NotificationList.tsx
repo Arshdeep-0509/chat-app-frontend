@@ -100,7 +100,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
       </div>
 
       {/* Navigation Filter Tabs */}
-      <div className="px-6 py-3 border-b border-slate-800/50 flex gap-2 z-10 bg-slate-950/20">
+      <div className="px-6 py-3 border-b border-slate-800/50 flex gap-2 z-10 bg-slate-950/20 overflow-x-auto">
         {(['all', 'requests', 'system'] as const).map((tab) => {
           const count = tab === 'all' 
             ? notifications.length 
@@ -127,7 +127,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
           filteredNotifications.map((notification) => (
             <div
               key={notification.id}
-              className={`p-4 rounded-2xl glassmorphism-light border border-slate-800/80 hover:border-slate-700/60 transition-all duration-200 flex gap-4 ${
+              className={`p-4 rounded-2xl glassmorphism-light border border-slate-800/80 hover:border-slate-700/60 transition-all duration-200 flex gap-3 sm:gap-4 ${
                 !notification.isRead ? 'border-l-4 border-l-sky-500 bg-sky-950/5' : ''
               } animate-fade-in`}
             >

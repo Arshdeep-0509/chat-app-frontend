@@ -71,7 +71,7 @@ export const Register: React.FC<RegisterProps> = ({ onNavigateToLogin }) => {
   };
 
   return (
-    <div className="glassmorphism p-8 rounded-3xl w-full border border-slate-800 shadow-2xl relative overflow-hidden select-none animate-fade-in">
+    <div className="glassmorphism p-6 sm:p-8 rounded-3xl w-full border border-slate-800 shadow-2xl relative overflow-hidden select-none animate-fade-in">
       <div className="absolute -top-[10%] -left-[10%] w-[120px] h-[120px] bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
 
       <h2 className="text-[20px] font-bold text-slate-100 text-center tracking-wide mb-6">
@@ -143,7 +143,7 @@ export const Register: React.FC<RegisterProps> = ({ onNavigateToLogin }) => {
         </div>
 
         {/* Password Fields */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-[11.5px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Password

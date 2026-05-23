@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChatListPanel } from '../../components/chat/ChatListPanel';
 import { ChatWindow } from '../../components/chat/ChatWindow';
 import { WelcomePanel } from '../../components/chat/WelcomePanel';
+import { AddContactModal } from '../../components/chat/AddContactModal';
 import type { ChatType } from '../../components/chat/ChatListItem';
 import type { MessageType } from '../../components/chat/MessageItem';
 import { useGetConversationsQuery, useGetProfileQuery, useGetConversationMessagesQuery } from '../../api/chatApi';
@@ -16,6 +17,9 @@ export const ChatPage: React.FC = () => {
 
   const [replyingToMessage, setReplyingToMessage] = useState<MessageType | null>(null);
   const [editingMessage, setEditingMessage] = useState<MessageType | null>(null);
+
+  const [isAddContactModalOpen, setIsAddContactModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.auth.user);
@@ -322,17 +326,19 @@ export const ChatPage: React.FC = () => {
 
   // Handle Quick Action clicks from Welcome Panel
   const handleQuickAction = (action: string) => {
-    if (action === 'send_doc' || action === 'add_contact') {
+    if (action === 'add_contact') {
+      setIsAddContactModalOpen(true);
+    } else if (action === 'send_doc') {
       const newContactId = `chat_${Date.now()}`;
-      const namePrompt = action === 'add_contact' ? 'Enter Contact Name:' : 'Upload document for:';
-      const input = prompt(namePrompt, action === 'add_contact' ? 'Hiring Coordinator' : 'Arshdeep Documents');
+      const namePrompt = 'Upload document for:';
+      const input = prompt(namePrompt, 'Arshdeep Documents');
       if (!input) return;
 
       const newChat: ChatType = {
         id: newContactId,
         name: input,
         avatar: '',
-        lastMessage: action === 'add_contact' ? 'Hey, I added you on ChatApp!' : 'Uploaded document files.',
+        lastMessage: 'Uploaded document files.',
         timestamp: 'Just Now',
         unreadCount: 0,
         sentByMe: true,
@@ -404,38 +410,68 @@ export const ChatPage: React.FC = () => {
   const activeChat = chats.find(c => c.id === activeChatId);
   const activeMessages = activeChatId ? messagesDb[activeChatId] || [] : [];
 
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 4000);
+  };
+
   return (
-    <div className="flex-1 flex overflow-hidden h-full">
-      {/* Left List of Chats */}
-      <ChatListPanel
-        chats={filteredChats}
-        activeChatId={activeChatId}
-        onSelectChat={setActiveChatId}
-        activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        onAddChatClick={handleStartNewChat}
+    <div className="flex-1 flex overflow-hidden h-full relative">
+      {/* Toast Alert */}
+      {toastMessage && (
+        <div className="absolute top-6 right-6 bg-[#0b0f19]/90 text-sky-400 px-5 py-3 rounded-2xl text-xs font-bold shadow-[0_0_40px_rgba(14,165,233,0.3)] z-[100] animate-fade-in flex items-center gap-3 border border-sky-500/30 backdrop-blur-md">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-sky-500"></span>
+          </span>
+          {toastMessage}
+        </div>
+      )}
+
+      {/* Add Contact Modal */}
+      <AddContactModal 
+        isOpen={isAddContactModalOpen} 
+        onClose={() => setIsAddContactModalOpen(false)} 
+        onRequestSuccess={() => showToast('request is send wait for there response')}
       />
 
-      {/* Right active chat box OR welcome window */}
-      {activeChatId && activeChat ? (
-        <ChatWindow
-          chat={activeChat}
-          messages={activeMessages}
-          onSendMessage={handleSendMessage}
-          onReact={handleReactToMessage}
-          onDeleteMessage={handleDeleteMessage}
-          onSendTyping={handleSendTyping}
-          replyingToMessage={replyingToMessage}
-          onSelectReply={setReplyingToMessage}
-          editingMessage={editingMessage}
-          onSelectEdit={setEditingMessage}
-          onEditMessage={handleEditMessage}
+      {/* Left List of Chats */}
+      <div className={`h-full shrink-0 ${activeChatId ? 'hidden md:block' : 'w-full md:w-auto'}`}>
+        <ChatListPanel
+          chats={filteredChats}
+          activeChatId={activeChatId}
+          onSelectChat={setActiveChatId}
+          activeFilter={activeFilter}
+          setActiveFilter={setActiveFilter}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          onAddChatClick={handleStartNewChat}
         />
-      ) : (
-        <WelcomePanel onQuickAction={handleQuickAction} />
-      )}
+      </div>
+
+      {/* Right active chat box OR welcome window */}
+      <div className={`flex-1 overflow-hidden h-full ${!activeChatId ? 'hidden md:flex flex-col' : 'flex flex-col'}`}>
+        {activeChatId && activeChat ? (
+          <ChatWindow
+            chat={activeChat}
+            messages={activeMessages}
+            onSendMessage={handleSendMessage}
+            onReact={handleReactToMessage}
+            onDeleteMessage={handleDeleteMessage}
+            onSendTyping={handleSendTyping}
+            replyingToMessage={replyingToMessage}
+            onSelectReply={setReplyingToMessage}
+            editingMessage={editingMessage}
+            onSelectEdit={setEditingMessage}
+            onEditMessage={handleEditMessage}
+            onBack={() => setActiveChatId(null)}
+          />
+        ) : (
+          <WelcomePanel onQuickAction={handleQuickAction} />
+        )}
+      </div>
     </div>
   );
 };

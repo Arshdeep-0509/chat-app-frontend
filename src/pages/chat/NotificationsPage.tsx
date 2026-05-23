@@ -17,7 +17,7 @@ export const NotificationsPage: React.FC = () => {
   };
 
   const notifications = useMemo(() => {
-    return chatRequests
+    return (chatRequests || [])
       .filter((req) => req.status === 'pending')
       .map((req) => {
         const notif: NotificationType = {

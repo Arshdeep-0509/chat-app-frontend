@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Video, Search, MoreVertical, Phone } from 'lucide-react';
+import { Video, Search, MoreVertical, Phone, ArrowLeft } from 'lucide-react';
 import { MessageItem } from './MessageItem';
 import type { MessageType } from './MessageItem';
 import { MessageInput } from './MessageInput';
@@ -17,6 +17,7 @@ interface ChatWindowProps {
   editingMessage: MessageType | null;
   onSelectEdit: (message: MessageType | null) => void;
   onEditMessage: (text: string) => void;
+  onBack?: () => void;
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
@@ -31,6 +32,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   editingMessage,
   onSelectEdit,
   onEditMessage,
+  onBack,
 }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,6 +79,11 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
         
         {/* Left Side User Details */}
         <div className="flex items-center gap-3 min-w-0">
+          {onBack && (
+            <button onClick={onBack} className="md:hidden p-1.5 -ml-1 mr-0.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          )}
           <div className="relative shrink-0">
             <div className="w-[40px] h-[40px] rounded-full bg-slate-700 overflow-hidden flex items-center justify-center border border-slate-700/50">
               {chat.avatar ? (

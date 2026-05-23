@@ -27,7 +27,7 @@ export const ChatListPanel: React.FC<ChatListPanelProps> = ({
   // const filters = ['All', 'Unread', 'Favourites', 'Groups'];
 
   return (
-    <div className="w-[340px] md:w-[380px] bg-[#0f172a] border-r border-slate-800/80 flex flex-col shrink-0 h-full relative">
+    <div className="w-full md:w-[340px] lg:w-[380px] bg-[#0f172a] border-r border-slate-800/80 flex flex-col shrink-0 h-full relative">
       {/* Top Header */}
       <div className="p-4 flex justify-between items-center select-none">
         <h1 className="text-xl font-bold text-sky-400 flex items-center gap-1 bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">

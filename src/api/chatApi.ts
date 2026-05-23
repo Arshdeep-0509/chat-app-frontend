@@ -13,6 +13,21 @@ export interface ParticipantDetail {
   last_seen?: string;
 }
 
+export interface User {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  profile_picture?: string;
+  bio?: string;
+  is_online?: boolean;
+  last_seen?: string;
+  blocked_users?: string[];
+  created_at?: string;
+  updated_at?: string;
+  request_status?: string;
+}
+
 export interface Message {
   id: string;
   conversation_id: string;
@@ -72,6 +87,10 @@ export interface RespondRequestInput {
   status: 'accepted' | 'declined';
 }
 
+export interface SendChatRequestInput {
+  receiver_id: string;
+}
+
 export const chatApi = createApi({
   reducerPath: 'chatApi',
   baseQuery: fetchBaseQuery({
@@ -84,7 +103,7 @@ export const chatApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Conversation', 'ChatRequest'],
+  tagTypes: ['Conversation', 'ChatRequest', 'User'],
   endpoints: (builder) => ({
     getConversations: builder.query<Conversation[], void>({
       query: () => '/conversations',
@@ -108,6 +127,18 @@ export const chatApi = createApi({
     getConversationMessages: builder.query<Message[], string>({
       query: (conversationId) => `/conversations/${conversationId}/messages`,
     }),
+    getUsers: builder.query<User[], void>({
+      query: () => '/users',
+      providesTags: ['User'],
+    }),
+    sendChatRequest: builder.mutation<{ message: string; chat_request: ChatRequest }, SendChatRequestInput>({
+      query: (body) => ({
+        url: '/chat-requests/send',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['User', 'ChatRequest'],
+    }),
   }),
 });
 
@@ -117,6 +148,8 @@ export const {
   useRespondToChatRequestMutation,
   useGetProfileQuery,
   useGetConversationMessagesQuery,
+  useGetUsersQuery,
+  useSendChatRequestMutation,
 } = chatApi;
 
 export default chatApi;

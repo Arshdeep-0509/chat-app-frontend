@@ -63,7 +63,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigateToRegister }) => {
   };
 
   return (
-    <div className="glassmorphism p-8 rounded-3xl w-full border border-slate-800 shadow-2xl relative overflow-hidden select-none animate-fade-in">
+    <div className="glassmorphism p-6 sm:p-8 rounded-3xl w-full border border-slate-800 shadow-2xl relative overflow-hidden select-none animate-fade-in">
       {/* Decorative glass glow inside */}
       <div className="absolute -top-[10%] -right-[10%] w-[120px] h-[120px] bg-sky-500/10 rounded-full blur-2xl pointer-events-none" />
 

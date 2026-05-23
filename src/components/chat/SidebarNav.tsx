@@ -17,17 +17,17 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   onLogout
 }) => {
   const topNavItems = [
-    { id: 'chats', icon: MessageSquare, label: 'Chats', badge: unreadCount },
-    { id: 'notifications', icon: Bell, label: 'Notifications', badge: notificationCount },
+    { id: 'chats', icon: MessageSquare, label: 'Chats' },
+    { id: 'notifications', icon: Bell, label: 'Notifications' },
     // { id: 'status', icon: Radio, label: 'Status' },
     // { id: 'groups', icon: Users, label: 'Groups' },
     // { id: 'ai', icon: Sparkles, label: 'Meta AI', customColor: 'text-violet-400' },
   ];
 
   return (
-    <div className="w-[64px] bg-[#0c1220] border-r border-slate-800/80 flex flex-col justify-between items-center py-4 select-none shrink-0 h-full">
+    <div className="w-full md:w-[64px] bg-[#0c1220] border-t md:border-r md:border-t-0 border-slate-800/80 flex flex-row md:flex-col justify-between items-center py-2 px-6 md:px-0 md:py-4 select-none shrink-0 h-[60px] md:h-full">
       {/* Top Icons */}
-      <div className="flex flex-col gap-5 w-full items-center">
+      <div className="flex flex-row md:flex-col gap-4 md:gap-5 items-center">
         {topNavItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -43,16 +43,9 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
               title={item.label}
             >
               <Icon className={`w-[22px] h-[22px]`} />
-              
-              {/* Badge */}
-              {item.badge && item.badge > 0 ? (
-                <span className="absolute top-1.5 right-1.5 bg-emerald-500 text-[#0b0f19] text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center border-2 border-[#0c1220]">
-                  {item.badge}
-                </span>
-              ) : null}
 
               {/* Tooltip */}
-              <div className="absolute left-[70px] bg-slate-950 text-slate-200 text-xs px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-55 shadow-lg border border-slate-800">
+              <div className="absolute left-[70px] bg-slate-950 text-slate-200 text-xs px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none md:group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-55 shadow-lg border border-slate-800 hidden md:block">
                 {item.label}
               </div>
             </button>
@@ -61,7 +54,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       </div>
 
       {/* Bottom Icons */}
-      <div className="flex flex-col gap-4 w-full items-center">
+      <div className="flex flex-row md:flex-col gap-4 md:gap-4 items-center">
         {/* Settings */}
         <button
           onClick={() => setActiveTab('settings')}
@@ -73,7 +66,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
           title="Settings"
         >
           <Settings className="w-[22px] h-[22px]" />
-          <div className="absolute left-[70px] bg-slate-950 text-slate-200 text-xs px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-55 shadow-lg border border-slate-800">
+          <div className="absolute left-[70px] bg-slate-950 text-slate-200 text-xs px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none md:group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-55 shadow-lg border border-slate-800 hidden md:block">
             Settings
           </div>
         </button>
@@ -99,7 +92,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             <User className="w-[18px] h-[18px] text-slate-400" />
           </div>
           
-          <div className="absolute left-[70px] bg-slate-950 text-slate-200 text-xs px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-55 shadow-lg border border-slate-800">
+          <div className="absolute left-[70px] bg-slate-950 text-slate-200 text-xs px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none md:group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-55 shadow-lg border border-slate-800 hidden md:block">
             Profile View
           </div>
         </button>
@@ -112,7 +105,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             title="Log Out"
           >
             <LogOut className="w-[22px] h-[22px]" />
-            <div className="absolute left-[70px] bg-slate-950 text-slate-200 text-xs px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-55 shadow-lg border border-slate-800">
+            <div className="absolute left-[70px] bg-slate-950 text-slate-200 text-xs px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none md:group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-55 shadow-lg border border-slate-800 hidden md:block">
               Log Out
             </div>
           </button>
